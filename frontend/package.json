@@ -8,9 +8,11 @@
     "build": "rimraf dist && webpack -p --progress --hide-modules --mode production"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "clipboard": "^2.0.4",
     "element-ui": "^2.3.4",
     "vue": "^2.5.16",
+    "vue-axios": "^2.1.4",
     "vue-clipboard2": "^0.3.0",
     "vue-router": "^3.0.2"
   },
