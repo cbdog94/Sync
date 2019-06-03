@@ -12,7 +12,7 @@
           :xl="{span: 3, offset: 10}"
         >
           <el-form-item label="提取码">
-            <el-input v-model="extract.code"></el-input>
+            <el-input v-model="extract.code" @keyup.enter.native="extractText"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -20,7 +20,7 @@
     <el-row v-show="!extract.show" :span="24">
       <el-col :offset="2" :span="20">
         <div>
-          <p style="word-wrap: break-word;">{{extract.text}}</p>
+          <p style="word-wrap: break-word; white-space: pre-wrap;">{{extract.text}}</p>
         </div>
       </el-col>
     </el-row>
@@ -82,8 +82,7 @@ export default {
               });
             },
             function(e) {
-              // alert("Can not copy");
-              // console.log(e);
+              console.log(e);
             }
           );
         })

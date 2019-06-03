@@ -8,7 +8,8 @@ const Extract = () => import('./Extract');
 import VueClipboard from 'vue-clipboard2'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
- 
+
+VueClipboard.config.autoSetContainer = true 
 Vue.use(VueAxios, axios)
 Vue.use(VueClipboard)
 Vue.use(Router)
