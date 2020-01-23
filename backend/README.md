@@ -29,3 +29,13 @@ FLASK_ENV=development python3 main.py --host=0.0.0.0
 ``` bash
 nohup gunicorn -w 4 -b 127.0.0.1:8000 main:app &
 ```
+
+## 测试
+
+``` bash
+# 同步
+$ curl -H "Content-Type:application/json" -X POST -d '{"text": "test", "once": true}' http://127.0.0.1:8000/submit
+
+# 提取
+$ curl -H "Content-Type:application/json" -X POST -d '{"code": "7918"}' http://127.0.0.1:8000/extract
+```
