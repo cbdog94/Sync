@@ -23,6 +23,12 @@ brew install yarn
 yarn
 ```
 
+## 更新依赖（非必须）
+减少可能的安全隐患
+``` bash
+yarn upgrade
+```
+
 ## 开发
 
 ``` bash
