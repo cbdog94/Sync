@@ -27,6 +27,7 @@
     <el-row :span="24">
       <el-col :offset="0" :span="24">
         <el-button v-show="extract.show" type="primary" plain @click="extractText">提取</el-button>
+        <el-button v-show="!extract.show" type="primary" plain @click="clipbord">复制</el-button>
         <el-button v-show="!extract.show" type="primary" plain @click="backExtract">再次提取</el-button>
       </el-col>
     </el-row>
@@ -95,6 +96,21 @@ export default {
       this.extract.show = true;
       // this.syncData.once = false;
       this.extract.code = "";
+    },
+    clipbord() {
+      var _self = this;
+      _self.$copyText(_self.extract.text).then(
+        function(e) {
+          // console.log(e);
+          _self.$message({
+            message: "提取文本已复制到剪切板！",
+            type: "success"
+          });
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
     }
   }
 };
