@@ -20,6 +20,11 @@ pip3 install -r requirements.txt
 
 ## 开发
 
+运行 redis
+``` bash
+docker run -d -p 6379:6379 --name docker-redis redis
+```
+运行 flask
 ``` bash
 FLASK_ENV=development python3 main.py --host=0.0.0.0
 ```
@@ -28,6 +33,10 @@ FLASK_ENV=development python3 main.py --host=0.0.0.0
 
 ``` bash
 nohup gunicorn -w 4 -b 127.0.0.1:8000 main:app &
+```
+构建docker image
+``` bash
+docker build -t sync_backend .
 ```
 
 ## 测试

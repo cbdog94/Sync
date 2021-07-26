@@ -11,11 +11,17 @@
           mode="horizontal"
           @select="handleSelect"
         >
-          <el-col :span="12">
+          <el-col :span="6">
             <el-menu-item index="/sync">同步文字</el-menu-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="6">
             <el-menu-item index="/extract">提取文本</el-menu-item>
+          </el-col>
+          <el-col :span="6">
+            <el-menu-item index="/upload">上传文件</el-menu-item>
+          </el-col>
+          <el-col :span="6">
+            <el-menu-item index="/download">提取文件</el-menu-item>
           </el-col>
         </el-menu>
       </el-col>

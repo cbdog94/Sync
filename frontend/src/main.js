@@ -15,11 +15,15 @@ Vue.use(ElementUI)
 
 const Sync = () => import('./Sync');
 const Extract = () => import('./Extract');
+const Upload = () => import('./Upload');
+const Download = () => import('./Download');
 
 const router = new Router({
   routes: [
     { path: '/sync', component: Sync },
-    { path: '/extract', component: Extract }
+    { path: '/extract', component: Extract },
+    { path: '/upload', component: Upload },
+    { path: '/download', component: Download }
   ]
 })
 

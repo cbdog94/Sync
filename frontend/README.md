@@ -37,8 +37,12 @@ npm run dev
 ```
 
 ## 部属
-
+生成前端代码
 ``` bash
 # build for production with minification
 npm run build
+```
+构建docker image
+``` bash
+docker build -t sync_frontend .
 ```
