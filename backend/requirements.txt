@@ -1,5 +1,5 @@
-Flask==1.0.2
-Flask-Cors==3.0.7
+Flask==2.0.1
+Flask-Cors==3.0.10
 gunicorn==19.7.1
-redis==3.2.1
+redis==3.5.3
 azure-storage-blob==12.8.1

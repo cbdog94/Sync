@@ -48,3 +48,8 @@ $ curl -H "Content-Type:application/json" -X POST -d '{"text": "test", "once": t
 # 提取
 $ curl -H "Content-Type:application/json" -X POST -d '{"code": "7918"}' http://127.0.0.1:8000/extract
 ```
+
+查看docker日志
+``` bash
+docker logs #Container ID#
+```

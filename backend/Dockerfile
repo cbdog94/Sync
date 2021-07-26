@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.8
 WORKDIR /sync_backend
 
 COPY requirements.txt ./
