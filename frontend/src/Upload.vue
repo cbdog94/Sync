@@ -8,14 +8,16 @@
         action="/syncbackend/upload"
         :on-success="uploadSuccess"
         :on-progress="uploadProcess"
+        :on-error="uploadFailure"
         :show-file-list="false"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
-          将文件拖到此处，或
+          将需要同步的文件拖到此处，或
           <em>点击上传</em>
         </div>
         <el-progress
+          class="topmargin"
           v-show="progress.show"
           :percentage="progress.percentage"
           :show-text="true"
@@ -71,6 +73,12 @@ export default {
       this.progress.show = false;
       this.progress.percentage = 0;
     },
+    uploadFailure(err, file, fileList) {
+      console.log(err);
+      this.$message.error("上传失败! " + err);
+      this.progress.show = false;
+      this.progress.percentage = 0;
+    },
     uploadProcess(event, file, fileList) {
       this.progress.show = true;
       this.progress.percentage = Math.floor(event.percent);
@@ -88,5 +96,11 @@ h4 {
 }
 p {
   color: #303133;
+}
+.el-upload {
+  display: block;
+}
+.el-upload-dragger {
+  width: auto;
 }
 </style>

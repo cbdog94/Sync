@@ -11,6 +11,7 @@
 ``` bash
 brew install node
 brew install yarn
+npm i -g npm-check-updates
 ```
 
 ## 开始
@@ -26,6 +27,7 @@ yarn
 ## 更新依赖（非必须）
 减少可能的安全隐患
 ``` bash
+ncu -u
 yarn upgrade
 ```
 

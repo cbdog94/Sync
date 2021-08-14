@@ -43,19 +43,12 @@ module.exports = (options = {}) => ({
     ]
   },
   optimization: {
-    runtimeChunk: {
-        name: "manifest"
-    },
+    minimize: true,
     splitChunks: {
-        cacheGroups: {
-            commons: {
-                test: /[\\/]node_modules[\\/]/,
-                name: "vendor",
-                chunks: "all"
-            }
-        }
+      minChunks: Infinity,
+      chunks: 'all'
     }
-},
+  },
   plugins: [
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({

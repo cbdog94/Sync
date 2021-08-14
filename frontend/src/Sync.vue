@@ -6,7 +6,7 @@
         v-show="syncData.show"
         type="textarea"
         :autosize="{ minRows: 2,maxRows: 10}"
-        placeholder="请输入内容"
+        placeholder="请输入需要同步的文本"
         v-model="syncData.text"
       ></el-input>
       <el-checkbox v-show="syncData.show" class="topmargin" v-model="syncData.once">阅后即焚</el-checkbox>
