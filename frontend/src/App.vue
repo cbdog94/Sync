@@ -22,8 +22,11 @@
         </el-col>
       </el-menu>
     </el-col>
+    <el-col :span="24">
+      <router-view></router-view>
+    </el-col>
   </el-row>
-  <router-view></router-view>
+  
 </template>
 
 <script>
