@@ -1,33 +1,29 @@
 <template>
-  <div id="app">
-    <el-row>
-      <!-- <el-container>
-      <el-header>-->
-      <el-col :span="24">
-        <el-menu
-          :default-active="$route.path"
-          router
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-        >
-          <el-col :span="6">
-            <el-menu-item index="/sync">同步文字</el-menu-item>
-          </el-col>
-          <el-col :span="6">
-            <el-menu-item index="/extract">提取文本</el-menu-item>
-          </el-col>
-          <el-col :span="6">
-            <el-menu-item index="/upload">上传文件</el-menu-item>
-          </el-col>
-          <el-col :span="6">
-            <el-menu-item index="/download">提取文件</el-menu-item>
-          </el-col>
-        </el-menu>
-      </el-col>
-    </el-row>
-    <router-view></router-view>
-  </div>
+  <el-row>
+    <el-col :span="24">
+      <el-menu
+        :default-active="$route.path"
+        router
+        mode="horizontal"
+        @select="handleSelect"
+        :ellipsis="false"
+      >
+        <el-col :span="6">
+          <el-menu-item index="/sync"><div class="menu-item-word">同步文字</div></el-menu-item>
+        </el-col>
+        <el-col :span="6">
+          <el-menu-item index="/extract"><div class="menu-item-word">提取文本</div></el-menu-item>
+        </el-col>
+        <el-col :span="6">
+          <el-menu-item index="/upload"><div class="menu-item-word">上传文件</div></el-menu-item>
+        </el-col>
+        <el-col :span="6">
+          <el-menu-item index="/download"><div class="menu-item-word">提取文件</div></el-menu-item>
+        </el-col>
+      </el-menu>
+    </el-col>
+  </el-row>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -37,15 +33,15 @@ export default {
       activeIndex: "1",
       syncData: {
         text: "",
-        once: false
-      }
+        once: false,
+      },
     };
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -62,5 +58,8 @@ h4 {
 }
 .topmargin {
   margin-top: 20px;
+}
+.menu-item-word {
+  width: 100%;
 }
 </style>

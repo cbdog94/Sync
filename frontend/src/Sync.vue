@@ -5,25 +5,40 @@
       <el-input
         v-show="syncData.show"
         type="textarea"
-        :autosize="{ minRows: 2,maxRows: 10}"
+        :autosize="{ minRows: 2, maxRows: 10 }"
         placeholder="请输入需要同步的文本"
         v-model="syncData.text"
       ></el-input>
-      <el-checkbox v-show="syncData.show" class="topmargin" v-model="syncData.once">阅后即焚</el-checkbox>
+      <el-checkbox
+        v-show="syncData.show"
+        class="topmargin"
+        v-model="syncData.once"
+        >阅后即焚</el-checkbox
+      >
       <p v-show="!syncData.show">
         提取码:
-        <span style="color:#F56C6C;font-size: 18px">{{syncData.code}}</span>
+        <span style="color: #f56c6c; font-size: 18px">{{ syncData.code }}</span>
       </p>
     </el-col>
     <el-col :span="24">
-      <el-button v-show="syncData.show" class="topmargin" type="primary" plain @click="sync">同步</el-button>
+      <el-button
+        v-show="syncData.show"
+        class="topmargin"
+        type="primary"
+        plain
+        size="large"
+        @click="sync"
+        >同步</el-button
+      >
       <el-button
         v-show="!syncData.show"
         class="topmargin"
         type="primary"
+        size="large"
         plain
         @click="backsync"
-      >再次同步</el-button>
+        >再次同步</el-button
+      >
     </el-col>
   </el-row>
 </template>
@@ -36,8 +51,8 @@ export default {
         text: "",
         once: false,
         show: true,
-        code: ""
-      }
+        code: "",
+      },
     };
   },
   methods: {
@@ -46,16 +61,16 @@ export default {
       if (_self.syncData.text == "") {
         _self.$message({
           message: "请输入需要同步的文本！",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
       this.axios
         .post("/syncbackend/submit", {
           text: _self.syncData.text,
-          once: _self.syncData.once
+          once: _self.syncData.once,
         })
-        .then(function(response) {
+        .then(function (response) {
           if (response.data.code != 0) {
             _self.$message.error("同步失败!");
             console.log(response);
@@ -65,10 +80,10 @@ export default {
           _self.syncData.show = false;
           _self.$message({
             message: "同步成功，请记录提取码！",
-            type: "success"
+            type: "success",
           });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
           _self.$message.error("同步失败!");
         });
@@ -78,8 +93,8 @@ export default {
       this.syncData.once = false;
       this.syncData.text = "";
       this.syncData.code = "";
-    }
-  }
+    },
+  },
 };
 </script>
 

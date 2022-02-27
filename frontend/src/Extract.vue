@@ -5,14 +5,17 @@
     <el-form v-show="extract.show" :model="extract" label-width="80px">
       <el-row :span="24">
         <el-col
-          :xs="{span: 10, offset: 6}"
-          :sm="{span: 4, offset: 10}"
-          :md="{span: 4, offset: 10}"
-          :lg="{span: 3, offset:10}"
-          :xl="{span: 3, offset: 10}"
+          :xs="{ span: 10, offset: 6 }"
+          :sm="{ span: 4, offset: 10 }"
+          :md="{ span: 4, offset: 10 }"
+          :lg="{ span: 3, offset: 10 }"
+          :xl="{ span: 3, offset: 10 }"
         >
           <el-form-item label="提取码">
-            <el-input v-model="extract.code" @keyup.enter.native="extractText"></el-input>
+            <el-input
+              v-model="extract.code"
+              @keyup.enter="extractText"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -20,15 +23,38 @@
     <el-row v-show="!extract.show" :span="24">
       <el-col :offset="2" :span="20">
         <div>
-          <p style="word-wrap: break-word; white-space: pre-wrap;">{{extract.text}}</p>
+          <p style="word-wrap: break-word; white-space: pre-wrap">
+            {{ extract.text }}
+          </p>
         </div>
       </el-col>
     </el-row>
-    <el-row :span="24">
+    <el-row :span="24" class="topmargin">
       <el-col :offset="0" :span="24">
-        <el-button v-show="extract.show" type="primary" plain @click="extractText">提取</el-button>
-        <el-button v-show="!extract.show" type="primary" plain @click="clipbord">复制</el-button>
-        <el-button v-show="!extract.show" type="primary" plain @click="backExtract">再次提取</el-button>
+        <el-button
+          v-show="extract.show"
+          type="primary"
+          plain
+          @click="extractText"
+          size="large"
+          >提取</el-button
+        >
+        <el-button
+          v-show="!extract.show"
+          type="primary"
+          plain
+          @click="clipbord"
+          size="large"
+          >复制</el-button
+        >
+        <el-button
+          v-show="!extract.show"
+          type="primary"
+          plain
+          @click="backExtract"
+          size="large"
+          >再次提取</el-button
+        >
       </el-col>
     </el-row>
   </div>
@@ -41,8 +67,8 @@ export default {
       extract: {
         code: "",
         show: true,
-        text: ""
-      }
+        text: "",
+      },
     };
   },
   methods: {
@@ -51,15 +77,15 @@ export default {
       if (_self.extract.code == "") {
         _self.$message({
           message: "请输入提取码！",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
       this.axios
         .post("/syncbackend/extract", {
-          code: _self.extract.code
+          code: _self.extract.code,
         })
-        .then(function(response) {
+        .then(function (response) {
           if (response.data.code == 1) {
             _self.$message.error("提取失败!");
             return;
@@ -67,7 +93,7 @@ export default {
           if (response.data.code == 2) {
             _self.$message({
               message: "提取文本不存在",
-              type: "warning"
+              type: "warning",
             });
             return;
           }
@@ -75,19 +101,19 @@ export default {
           _self.extract.show = false;
 
           _self.$copyText(_self.extract.text).then(
-            function(e) {
+            function (e) {
               // console.log(e);
               _self.$message({
                 message: "提取文本已复制到剪切板！",
-                type: "success"
+                type: "success",
               });
             },
-            function(e) {
+            function (e) {
               console.log(e);
             }
           );
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
           _self.$message.error("提取失败!");
         });
@@ -100,19 +126,19 @@ export default {
     clipbord() {
       var _self = this;
       _self.$copyText(_self.extract.text).then(
-        function(e) {
+        function (e) {
           // console.log(e);
           _self.$message({
             message: "提取文本已复制到剪切板！",
-            type: "success"
+            type: "success",
           });
         },
-        function(e) {
+        function (e) {
           console.log(e);
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
 

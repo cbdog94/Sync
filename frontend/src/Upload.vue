@@ -11,7 +11,7 @@
         :on-error="uploadFailure"
         :show-file-list="false"
       >
-        <i class="el-icon-upload"></i>
+        <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
         <div class="el-upload__text">
           将需要同步的文件拖到此处，或
           <em>点击上传</em>
@@ -42,7 +42,11 @@
 </template>
 
 <script>
+import { UploadFilled } from "@element-plus/icons-vue";
 export default {
+  components: {
+    UploadFilled,
+  },
   data() {
     return {
       progress: {

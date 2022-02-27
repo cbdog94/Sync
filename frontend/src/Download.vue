@@ -14,19 +14,20 @@
           <el-form-item label="提取码">
             <el-input
               v-model="extract.code"
-              @keyup.enter.native="extractFile"
+              @keyup.enter="extractFile"
             ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <el-row :span="24">
+    <el-row :span="24" class="topmargin">
       <el-col :offset="0" :span="24">
         <el-button
           v-show="extract.show"
           type="primary"
           plain
           @click="extractFile"
+          size="large"
           >提取</el-button
         >
         <el-button
@@ -34,6 +35,7 @@
           type="primary"
           plain
           @click="backExtract"
+          size="large"
           >再次提取</el-button
         >
       </el-col>

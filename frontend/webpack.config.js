@@ -18,7 +18,12 @@ module.exports = (options = {}) => ({
     publicPath: options.dev ? '/assets/' : publicPath
   },
   module: {
-    rules: [{
+    rules: [
+      {
+        test: /\.mjs$/i,
+        resolve: { byDependency: { esm: { fullySpecified: false } } },
+      },
+      {
         test: /\.vue$/,
         use: ['vue-loader']
       },
@@ -54,22 +59,21 @@ module.exports = (options = {}) => ({
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
-    new CompressionWebpackPlugin({ 
+    new CompressionWebpackPlugin({
       filename: '[path].gz[query]',
       algorithm: 'gzip',
       test: /\.(js|css|html)$/,
       threshold: 10240,
       minRatio: 0.8
-  })
+    })
   ],
   resolve: {
     alias: {
       '~': resolve(__dirname, 'src')
     },
-    extensions: ['.js', '.vue', '.json', '.css']
+    extensions: ['.ts', '.js', '.mjs', '.vue', '.json', '.css']
   },
   devServer: {
-    disableHostCheck: true,
     host: '127.0.0.1',
     port: 8010,
     proxy: {
@@ -88,7 +92,7 @@ module.exports = (options = {}) => ({
   externals: {
     'vue': 'Vue',
     'vue-router': 'VueRouter',
-    'element-ui': 'ELEMENT'
-}
+    'element-plus': 'ElementPlus'
+  }
   // devtool: options.dev ? '#eval-source-map' : '#source-map'
 })
