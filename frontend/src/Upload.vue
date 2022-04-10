@@ -33,6 +33,7 @@
         v-show="!syncData.show"
         class="topmargin"
         type="primary"
+        size="large"
         plain
         @click="backsync"
         >再次上传</el-button
