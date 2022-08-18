@@ -1,3 +1,4 @@
+import os
 import random
 
 import redis
@@ -7,7 +8,11 @@ import configs
 import abs
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
+APP_DIR = os.path.dirname(__file__)
+DIST_DIR = os.path.join(APP_DIR, 'dist')
+API_PREFIX = '/syncbackend'
+
+app = Flask(__name__, static_url_path = '', static_folder = DIST_DIR)
 configs = configs.configs
 
 # 调试的时候使用, 解决跨域的问题
@@ -19,10 +24,12 @@ r = redis.Redis(**configs['redis'])
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    entry = os.path.join(DIST_DIR, 'index.html')
+    print(entry)
+    return send_file(entry)
 
 
-@app.route('/submit', methods=['GET', 'POST'])
+@app.route(f'{API_PREFIX}/submit', methods=['GET', 'POST'])
 def submit():
     res = {'code': 0, 'message': '', 'result': {'code': ''}}
     if request.method == 'POST':
@@ -43,7 +50,7 @@ def submit():
     return jsonify(res)
 
 
-@app.route('/extract', methods=['GET', 'POST'])
+@app.route(f'{API_PREFIX}/extract', methods=['GET', 'POST'])
 def extract():
     res = {'code': 0, 'message': '', 'result': {'text': ''}}
     if request.method == 'POST':
@@ -69,7 +76,7 @@ def extract():
     return jsonify(res)
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route(f'{API_PREFIX}/upload', methods=['GET', 'POST'])
 def uploader():
     res = {'code': 0, 'message': '', 'result': {'code': ''}}
     if request.method == 'POST':
@@ -91,7 +98,7 @@ def uploader():
     return jsonify(res)
 
 
-@app.route('/checkfile/<string:upload_code>', methods=['GET', 'POST'])
+@app.route(f'{API_PREFIX}/checkfile/<string:upload_code>', methods=['GET', 'POST'])
 def checkfile(upload_code: str):
     res = {'code': 0, 'message': '', 'result': {'filename': ''}}
     if not upload_code:
@@ -106,7 +113,7 @@ def checkfile(upload_code: str):
     return jsonify(res)
 
 
-@app.route('/download/<string:upload_code>', methods=['GET', 'POST'])
+@app.route(f'{API_PREFIX}/download/<string:upload_code>', methods=['GET', 'POST'])
 def download(upload_code: str):
     res = {'code': 0, 'message': '', 'result': {'text': ''}}
     if not upload_code:

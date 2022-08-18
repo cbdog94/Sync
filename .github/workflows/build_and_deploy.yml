@@ -1,0 +1,61 @@
+# For more info on Python, GitHub Actions, and Azure App Service 
+# please head to https://aka.ms/python-webapps-actions
+
+name: Build and deploy Flask + Vue.js app to Azure App Service
+
+on:
+  push:
+    branches: 
+      - master
+
+env:
+  WEBAPP_NAME: 'sync-jp'             # Replace with the name of your Azure web app
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install and build Vue.js project
+      working-directory: ./frontend
+      run: |
+        yarn
+        npm run build
+
+
+    - name: Upload artifact for deployment jobs
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-app
+        path: |
+          backend
+  
+  deploy-to-webapp:
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: python-app
+          path: .
+
+        # https://docs.microsoft.com/zh-cn/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux
+      - name: Log in to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to App Service
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.WEBAPP_NAME}}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
