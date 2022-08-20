@@ -6,6 +6,10 @@ from io import BytesIO
 container_name = "sync-files"
 connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
 
+if connect_str is None:
+    print('Please ensure environmnet variable AZURE_STORAGE_CONNECTION_STRING is set in current process.')
+    exit(1)
+
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
 

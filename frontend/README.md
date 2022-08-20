@@ -28,6 +28,7 @@ yarn
 减少可能的安全隐患
 ``` bash
 ncu -u
+yarn install
 yarn upgrade
 ```
 
@@ -39,12 +40,13 @@ npm run dev
 ```
 
 ## 部属
-生成前端代码
+生成前端代码, 默认路径在backend/dist目录下
 ``` bash
 # build for production with minification
 npm run build
 ```
-构建docker image
+~~构建docker image~~
 ``` bash
-docker build -t sync_frontend .
+# deprecation 
+# docker build -t sync_frontend .
 ```
