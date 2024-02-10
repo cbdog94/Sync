@@ -24,14 +24,14 @@ jobs:
         node-version: 20
 
     - name: Run install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: install
 
     - name: Build production bundle
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: build
 
     - name: Upload artifact for deployment jobs
       uses: actions/upload-artifact@v3
