@@ -19,21 +19,16 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 20
 
-    - name: Run install
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: install
-        dir: ./frontend
-
-    - name: Build production bundle
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: build
-        dir: ./frontend
+    - name: Install and build Vue.js project
+      working-directory: ./frontend
+      run: |
+        corepack enable
+        yarn install
+        yarn build
 
     - name: Upload artifact for deployment jobs
       uses: actions/upload-artifact@v3
