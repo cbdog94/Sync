@@ -8,37 +8,38 @@
     "build": "rimraf dist && webpack --node-env production --progress --mode production"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.1.0",
-    "axios": "^1.4.0",
-    "core-js": "^3.32.1",
-    "element-plus": "^2.3.9",
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.6.7",
+    "core-js": "^3.35.1",
+    "element-plus": "^2.5.5",
     "js-file-download": "^0.4.12",
-    "vue": "^3.3.4",
+    "vue": "^3.4.18",
     "vue-axios": "^3.5.2",
     "vue-clipboard2": "^0.3.3",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.5"
   },
   "engines": {
     "node": ">=6"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.10",
-    "@babel/preset-env": "^7.22.10",
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
     "@vue/babel-preset-app": "^5.0.8",
-    "autoprefixer": "^10.4.15",
+    "autoprefixer": "^10.4.17",
     "babel-loader": "^9.1.3",
-    "compression-webpack-plugin": "^10.0.0",
-    "css-loader": "^6.8.1",
+    "compression-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.10.0",
     "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.5.3",
-    "postcss-loader": "^7.3.3",
-    "rimraf": "^5.0.1",
-    "style-loader": "^3.3.3",
+    "html-webpack-plugin": "^5.6.0",
+    "postcss-loader": "^8.1.0",
+    "rimraf": "^5.0.5",
+    "style-loader": "^3.3.4",
     "url-loader": "^4.1.1",
-    "vue-loader": "^17.2.2",
-    "vue-template-compiler": "^2.7.14",
-    "webpack": "^5.88.2",
+    "vue-loader": "^17.4.2",
+    "vue-template-compiler": "^2.7.16",
+    "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
-  }
+  },
+  "packageManager": "yarn@4.1.0"
 }

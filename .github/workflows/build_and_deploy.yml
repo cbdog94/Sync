@@ -21,14 +21,17 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18
+        node-version: 20
 
-    - name: Install and build Vue.js project
-      working-directory: ./frontend
-      run: |
-        yarn
-        npm run build
+    - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
 
+    - name: Build production bundle
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
 
     - name: Upload artifact for deployment jobs
       uses: actions/upload-artifact@v3

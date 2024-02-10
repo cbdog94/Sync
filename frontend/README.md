@@ -4,13 +4,15 @@
 
 ## 环境
 
-`Node >= 6`
+`Node >= 18`
 
 - 安装node和yarn
 
 ``` bash
 brew install node
-brew install yarn
+npm install -g corepack
+corepack enable
+yarn set version berry
 npm i -g npm-check-updates
 ```
 
@@ -29,21 +31,23 @@ yarn
 ``` bash
 ncu -u
 yarn install
-yarn upgrade
+yarn up
 ```
 
 ## 开发
 
 ``` bash
 # serve with hot reload at localhost:8010
-npm run dev
+yarn dev
+# or npm run dev
 ```
 
 ## 部属
 生成前端代码, 默认路径在backend/dist目录下
 ``` bash
 # build for production with minification
-npm run build
+yarn build
+# or npm run build
 ```
 ~~构建docker image~~
 ``` bash
