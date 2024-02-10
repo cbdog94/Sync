@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -27,11 +27,13 @@ jobs:
       uses: borales/actions-yarn@v4
       with:
         cmd: install
+        dir: ./frontend
 
     - name: Build production bundle
       uses: borales/actions-yarn@v4
       with:
         cmd: build
+        dir: ./frontend
 
     - name: Upload artifact for deployment jobs
       uses: actions/upload-artifact@v3
