@@ -1,16 +1,18 @@
 import os
-from azure.storage.blob import BlobServiceClient
 from io import BytesIO
+from azure.identity import DefaultAzureCredential
+from azure.storage.blob import BlobServiceClient
 
 
 container_name = "sync-files"
-connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+account_url = os.getenv('AZURE_STORAGE_ACCOUNT_URL')
 
-if connect_str is None:
-    print('Please ensure environmnet variable AZURE_STORAGE_CONNECTION_STRING is set in current process.')
+if account_url is None:
+    print('Please ensure environmnet variable AZURE_STORAGE_ACCOUNT_URL is set in current process.')
     exit(1)
 
-blob_service_client = BlobServiceClient.from_connection_string(connect_str)
+default_credential = DefaultAzureCredential()
+blob_service_client = BlobServiceClient(account_url, credential=default_credential)
 
 
 def upload(file_name, file_data):

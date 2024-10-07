@@ -22,9 +22,10 @@ pip3 install -r requirements.txt
 - 确保backend文件夹下有dist目录
 
 ## 开发
-
+添加环境变量 AZURE_REDIS_HOST AZURE_STORAGE_ACCOUNT_URL
 运行 flask
 ``` bash
+az login
 FLASK_ENV=development python3 app.py --host=0.0.0.0
 ```
 
