@@ -25,7 +25,14 @@ module.exports = (options = {}) => ({
       },
       {
         test: /\.vue$/,
-        use: ['vue-loader']
+        loader: 'vue-loader',
+        options: {
+          compilerOptions: {
+            compatConfig: {
+              MODE: 2
+            }
+          }
+        }
       },
       {
         test: /\.js$/,
@@ -69,22 +76,21 @@ module.exports = (options = {}) => ({
   ],
   resolve: {
     alias: {
-      '~': resolve(__dirname, 'src')
+      '~': resolve(__dirname, 'src'),
+      vue: '@vue/compat'
     },
     extensions: ['.ts', '.js', '.mjs', '.vue', '.json', '.css']
   },
   devServer: {
     host: '127.0.0.1',
     port: 8010,
-    proxy: {
-      '/api/': {
-        target: 'http://127.0.0.1:8080',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    },
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://localhost:8080',
+        pathRewrite: { '^/api': '' },
+      },
+    ],
     historyApiFallback: {
       index: url.parse(options.dev ? '/assets/' : publicPath).pathname
     }
