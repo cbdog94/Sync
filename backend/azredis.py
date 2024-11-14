@@ -31,53 +31,60 @@ def extract_username_from_token(token):
     return jwt["oid"]
 
 
-scope = "https://redis.azure.com/.default"
-cred = DefaultAzureCredential()
-token = cred.get_token(scope)
-user_name = extract_username_from_token(token.token)
-r = redis.Redis(
-    host=host,
-    port=6380,
-    db=0,
-    ssl=True,
-    username=user_name,
-    password=token.token,
-    decode_responses=True,
-)
+class AzureRedisClient:
+    def __init__(self, host, scope="https://redis.azure.com/.default"):
+        self.cred = DefaultAzureCredential()
+        self.scope = scope
+        self.token = self.cred.get_token(self.scope)
+        self.user_name = extract_username_from_token(self.token.token)
+        self.r = redis.Redis(
+            host=host,
+            port=6380,
+            db=0,
+            ssl=True,
+            username=self.user_name,
+            password=self.token.token,
+            decode_responses=True,
+        )
+
+    def need_refreshing(self, refresh_offset=300):
+        return not self.token or self.token.expires_on - time.time() < refresh_offset
+
+    def refresh_token(self):
+        if self.need_refreshing():
+            print("Refreshing token...")
+            self.token = self.cred.get_token(self.scope)
+            self.r = redis.Redis(
+                host=host,
+                port=6380,
+                db=0,
+                ssl=True,
+                username=self.user_name,
+                password=self.token.token,
+                decode_responses=True,
+            )
+
+    def get(self, key):
+        self.refresh_token()
+        return self.r.get(key)
+
+    def delete(self, key):
+        self.refresh_token()
+        return self.r.delete(key)
+
+    def set(self, key, value):
+        self.refresh_token()
+        self.r.set(key, value, ex=3600)
 
 
-def need_refreshing(token, refresh_offset=300):
-    return not token or token.expires_on - time.time() < refresh_offset
-
+# Usage
+azure_redis_client = AzureRedisClient(host)
 
 def get(key):
-    global token
-    if need_refreshing(token):
-        print("Refreshing token...")
-        tmp_token = cred.get_token(scope)
-        if tmp_token:
-            token = tmp_token
-        r.execute_command("AUTH", user_name, token.token)
-    return r.get(key)
-
+    return azure_redis_client.get(key)
 
 def delete(key):
-    global token
-    if need_refreshing(token):
-        print("Refreshing token...")
-        tmp_token = cred.get_token(scope)
-        if tmp_token:
-            token = tmp_token
-        r.execute_command("AUTH", user_name, token.token)
-    return r.delete(key)
-
+    return azure_redis_client.delete(key)
 
 def set(key, value):
-    global token
-    if need_refreshing(token):
-        print("Refreshing token...")
-        tmp_token = cred.get_token(scope)
-        if tmp_token:
-            token = tmp_token
-        r.execute_command("AUTH", user_name, token.token)
-    r.set(key, value, ex=3600)
+    azure_redis_client.set(key, value)
