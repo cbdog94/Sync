@@ -26,6 +26,8 @@ pip3 install -r requirements.txt
 运行 flask
 ``` bash
 az login
+export AZURE_REDIS_HOST=""
+export AZURE_STORAGE_ACCOUNT_URL=""
 FLASK_ENV=development python3 app.py --host=0.0.0.0
 ```
 
@@ -46,13 +48,18 @@ docker build -t sync_backend .
 docker run -d -p 8000:8000 --name test_sync sync_backend
 
 # 同步
-$ curl -H "Content-Type:application/json" -X POST -d '{"text": "test", "once": true}' http://127.0.0.1:8000/submit
-
+$ curl -H "Content-Type:application/json" -X POST -d '{"text": "test", "once": true}' http://127.0.0.1:5000/syncbackend/submit
 # 提取
-$ curl -H "Content-Type:application/json" -X POST -d '{"code": "7918"}' http://127.0.0.1:8000/extract
+$ curl -H "Content-Type:application/json" -X POST -d '{"code": "7918"}' http://127.0.0.1:5000/syncbackend/extract
 ```
 
 查看docker日志
 ``` bash
 docker logs #Container ID#
+```
+
+## Upgrade Version
+```
+source ./.venv/bin/activate
+pip-upgrade
 ```
