@@ -4,7 +4,7 @@ import random
 from flask import Flask, jsonify, request, send_file
 
 import abs
-import azredis
+import azsql
 from werkzeug.utils import secure_filename
 
 APP_DIR = os.path.dirname(__file__)
@@ -41,10 +41,10 @@ def submit():
             res["message"] = "Text or Once is missed."
         else:
             random_code = "%04d" % random.randint(0, 9999)
-            while azredis.get(f"{random_code}_text") is not None:
+            while azsql.get(f"{random_code}_text") is not None:
                 random_code = "%04d" % random.randint(0, 9999)
-            azredis.set(f"{random_code}_text", data["text"])
-            azredis.set(f"{random_code}_once", str(data["once"]))
+            azsql.set(f"{random_code}_text", data["text"])
+            azsql.set(f"{random_code}_once", str(data["once"]))
             res["result"]["code"] = random_code
     else:
         res["code"] = 1
@@ -62,15 +62,15 @@ def extract():
             res["message"] = "Code is missed."
         else:
             code = data["code"]
-            if azredis.get(f"{code}_text") is None:
+            if azsql.get(f"{code}_text") is None:
                 res["code"] = 2
                 res["message"] = "Code dose not exsist."
             else:
-                text = azredis.get(f"{code}_text")
-                once = azredis.get(f"{code}_once")
+                text = azsql.get(f"{code}_text")
+                once = azsql.get(f"{code}_once")
                 if once == "True":
-                    azredis.delete(f"{code}_text")
-                    azredis.delete(f"{code}_once")
+                    azsql.delete(f"{code}_text")
+                    azsql.delete(f"{code}_once")
                 res["result"]["text"] = text
     else:
         res["code"] = 1
@@ -87,9 +87,9 @@ def uploader():
             file_name = secure_filename(file.filename)
 
             random_code = "%04d" % random.randint(0, 9999)
-            while azredis.get(f"{random_code}_file") is not None:
+            while azsql.get(f"{random_code}_file") is not None:
                 random_code = "%04d" % random.randint(0, 9999)
-            azredis.set(f"{random_code}_file", file_name)
+            azsql.set(f"{random_code}_file", file_name)
             abs.upload(f"file-{random_code}", file.read())
             res["result"]["code"] = random_code
         except Exception as ex:
@@ -104,11 +104,11 @@ def checkfile(upload_code: str):
     if not upload_code:
         res["code"] = 1
         res["message"] = "Code is missed."
-    elif azredis.get(f"{upload_code}_file") is None:
+    elif azsql.get(f"{upload_code}_file") is None:
         res["code"] = 2
         res["message"] = "Code dose not exsist."
     else:
-        file_name = azredis.get(f"{upload_code}_file")
+        file_name = azsql.get(f"{upload_code}_file")
         res["result"]["filename"] = file_name
     return jsonify(res)
 
@@ -120,11 +120,11 @@ def download(upload_code: str):
         res["code"] = 1
         res["message"] = "Code is missed."
         return jsonify(res)
-    if azredis.get(f"{upload_code}_file") is None:
+    if azsql.get(f"{upload_code}_file") is None:
         res["code"] = 2
         res["message"] = "Code dose not exsist."
         return jsonify(res)
-    file_name = azredis.get(f"{upload_code}_file")
+    file_name = azsql.get(f"{upload_code}_file")
     download_file = abs.download(f"file-{upload_code}")
     return send_file(download_file, download_name=file_name, as_attachment=True)
 

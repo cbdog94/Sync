@@ -4,3 +4,4 @@ gunicorn==23.0.0
 redis==5.2.1
 azure-storage-blob==12.25.1
 azure-identity==1.21.0
+pyodbc==5.2.0
