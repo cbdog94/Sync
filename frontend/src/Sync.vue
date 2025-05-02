@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :offset="2" :span="20">
+    <el-col v-loading="loading" :offset="2" :span="20">
       <h4>同步文本</h4>
       <el-input
         v-show="syncData.show"
@@ -47,6 +47,7 @@
 export default {
   data() {
     return {
+      loading: false,
       syncData: {
         text: "",
         once: false,
@@ -65,6 +66,7 @@ export default {
         });
         return;
       }
+      _self.loading = true;
       this.axios
         .post("/syncbackend/submit", {
           text: _self.syncData.text,
@@ -72,10 +74,12 @@ export default {
         })
         .then(function (response) {
           if (response.data.code != 0) {
+            _self.loading = false;
             _self.$message.error("同步失败!");
             console.log(response);
             return;
           }
+          _self.loading = false;
           _self.syncData.code = response.data.result.code;
           _self.syncData.show = false;
           _self.$message({
@@ -84,6 +88,7 @@ export default {
           });
         })
         .catch(function (error) {
+          _self.loading = false;
           console.log(error);
           _self.$message.error("同步失败!");
         });

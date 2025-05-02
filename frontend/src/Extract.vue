@@ -2,7 +2,7 @@
   <div>
     <h4>提取文本</h4>
 
-    <el-form v-show="extract.show" :model="extract" label-width="80px">
+    <el-form v-loading="loading" v-show="extract.show" :model="extract" label-width="80px">
       <el-row :span="24">
         <el-col
           :xs="{ span: 10, offset: 6 }"
@@ -64,6 +64,7 @@
 export default {
   data() {
     return {
+      loading: false,
       extract: {
         code: "",
         show: true,
@@ -81,22 +82,26 @@ export default {
         });
         return;
       }
+      _self.loading = true;
       this.axios
         .post("/syncbackend/extract", {
           code: _self.extract.code,
         })
         .then(function (response) {
           if (response.data.code == 1) {
+            _self.loading = false;
             _self.$message.error("提取失败!");
             return;
           }
           if (response.data.code == 2) {
+            _self.loading = false;
             _self.$message({
               message: "提取文本不存在",
               type: "warning",
             });
             return;
           }
+          _self.loading = false;
           _self.extract.text = response.data.result.text;
           _self.extract.show = false;
 
@@ -114,6 +119,7 @@ export default {
           );
         })
         .catch(function (error) {
+          _self.loading = false;
           console.log(error);
           _self.$message.error("提取失败!");
         });
