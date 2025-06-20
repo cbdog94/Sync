@@ -26,8 +26,7 @@ pip3 install -r requirements.txt
 运行 flask
 ``` bash
 az login
-export AZURE_REDIS_HOST=""
-export AZURE_STORAGE_ACCOUNT_URL=""
+export AZURE_STORAGE_ACCOUNT_URL="" AZURE_SQL_SERVER="" AZURE_SQL_DATABASE=""
 FLASK_ENV=development python3 app.py --host=0.0.0.0
 ```
 
