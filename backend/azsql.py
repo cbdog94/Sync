@@ -21,12 +21,14 @@ class AzureSqlClient:
             f"DRIVER={driver};SERVER={server};DATABASE={database};Encrypt=yes;"
             "TrustServerCertificate=no;"
         )
-
-    def __get_conn(self):
-        credential = DefaultAzureCredential(
+        # Cache the credential to avoid creating it on every call
+        self.credential = DefaultAzureCredential(
             exclude_interactive_browser_credential=False
         )
-        token_bytes = credential.get_token(
+
+    def __get_conn(self):
+        # Use the cached credential instead of creating a new one
+        token_bytes = self.credential.get_token(
             "https://database.windows.net/.default"
         ).token.encode("UTF-16-LE")
         token_struct = struct.pack(
