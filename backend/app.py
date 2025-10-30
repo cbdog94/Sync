@@ -6,6 +6,7 @@ from flask import Flask, jsonify, request, send_file
 import abs
 import azsql
 from werkzeug.utils import secure_filename
+import time
 
 APP_DIR = os.path.dirname(__file__)
 DIST_DIR = os.path.join(APP_DIR, "dist")
@@ -34,21 +35,46 @@ def health():
 @app.route(f"{API_PREFIX}/submit", methods=["GET", "POST"])
 def submit():
     res = {"code": 0, "message": "", "result": {"code": ""}}
+    start_time = time.time()
+    
     if request.method == "POST":
         data = request.json
+        parse_time = time.time()
+        print(f"Request parsing took {parse_time - start_time:.4f} seconds")
+        
         if data is None or data["text"] is None or data["once"] is None:
             res["code"] = 1
             res["message"] = "Text or Once is missed."
         else:
             random_code = "%04d" % random.randint(0, 9999)
+            
+            # Check if code exists (azsql call)
+            check_start = time.time()
             while azsql.get(f"{random_code}_text") is not None:
                 random_code = "%04d" % random.randint(0, 9999)
-            azsql.set(f"{random_code}_text", data["text"])
-            azsql.set(f"{random_code}_once", str(data["once"]))
+            check_time = time.time()
+            print(f"Code uniqueness check (azsql.get) took {check_time - check_start:.4f} seconds")
+            
+            # Store both text and once flag in a single batch operation
+            set_start = time.time()
+            azsql.set_many({
+                f"{random_code}_text": data["text"],
+                f"{random_code}_once": str(data["once"])
+            })
+            set_time = time.time()
+            print(f"Storing text and once flag (azsql.set_many) took {set_time - set_start:.4f} seconds")
+            
             res["result"]["code"] = random_code
+            
+            total_db_time = (check_time - check_start) + (set_time - set_start)
+            print(f"Total azsql operations took {total_db_time:.4f} seconds")
     else:
         res["code"] = 1
         res["message"] = "Only Post request accepted."
+    
+    total_time = time.time() - start_time
+    print(f"Total request processing took {total_time:.4f} seconds")
+
     return jsonify(res)
 
 
@@ -62,15 +88,18 @@ def extract():
             res["message"] = "Code is missed."
         else:
             code = data["code"]
-            if azsql.get(f"{code}_text") is None:
+            # Batch get both text and once flag in a single operation
+            results = azsql.get_many([f"{code}_text", f"{code}_once"])
+            
+            if f"{code}_text" not in results:
                 res["code"] = 2
                 res["message"] = "Code dose not exsist."
             else:
-                text = azsql.get(f"{code}_text")
-                once = azsql.get(f"{code}_once")
+                text = results[f"{code}_text"]
+                once = results.get(f"{code}_once")
                 if once == "True":
-                    azsql.delete(f"{code}_text")
-                    azsql.delete(f"{code}_once")
+                    # Batch delete both keys in a single operation
+                    azsql.delete_many([f"{code}_text", f"{code}_once"])
                 res["result"]["text"] = text
     else:
         res["code"] = 1
