@@ -1,47 +1,37 @@
 {
   "name": "sync-frontend",
-  "description": "A Vue.js project",
+  "version": "2.0.0",
+  "description": "A modern Vue.js text sync application",
   "author": "cbdog94@163.com",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "webpack serve --hot --mode development --host ::",
-    "build": "rimraf dist && webpack --node-env production --progress --mode production"
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
-    "@vue/compat": "^3.5.24",
+    "@vueuse/core": "^14.1.0",
     "axios": "^1.13.2",
-    "core-js": "^3.47.0",
-    "element-plus": "^2.11.8",
-    "js-file-download": "^0.4.12",
-    "vue": "^3.5.24",
-    "vue-axios": "^3.5.2",
-    "vue-clipboard2": "^0.3.3",
-    "vue-router": "^4.6.3"
-  },
-  "engines": {
-    "node": ">=6"
+    "element-plus": "^2.13.0",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
-    "@vue/babel-preset-app": "^5.0.9",
-    "@vue/compiler-sfc": "^3.5.24",
-    "autoprefixer": "^10.4.22",
-    "babel-loader": "^10.0.0",
-    "compression-webpack-plugin": "^11.1.0",
-    "css-loader": "^7.1.2",
-    "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.6.5",
+    "@types/node": "^25.0.3",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
-    "postcss-loader": "^8.2.0",
-    "rimraf": "^6.1.0",
-    "style-loader": "^4.0.0",
-    "url-loader": "^4.1.1",
-    "vue-loader": "^17.4.2",
-    "webpack": "^5.103.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2"
+    "typescript": "^5.9.3",
+    "unplugin-auto-import": "^20.3.0",
+    "unplugin-vue-components": "^30.0.0",
+    "vite": "^7.3.0",
+    "vue-tsc": "^3.2.1"
   },
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=18"
+  }
 }
