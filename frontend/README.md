@@ -1,56 +1,81 @@
-# 前端开发
+# 前端
 
-基于element-ui
+基于 Vue 3 + TypeScript + Vite + Element Plus
 
-## 环境
+## 技术栈
 
-`Node >= 18`
+- **Vue 3** - Composition API
+- **TypeScript** - 类型安全
+- **Vite** - 现代构建工具
+- **Element Plus** - UI 组件库
+- **VueUse** - 组合式 API 工具集
+- **pnpm** - 高效包管理器
 
-- 安装node和yarn
+## 环境要求
 
-``` bash
-brew install node
-npm install -g corepack
-corepack enable
-yarn set version berry
-npm i -g npm-check-updates
+- Node.js >= 18
+- pnpm >= 9.0
+
+## 安装 pnpm
+
+```bash
+npm install -g pnpm
 ```
 
 ## 开始
 
- - 克隆或者下载当前仓库
- - 进入frontend文件夹
- - 安装所需要的依赖
+```bash
+# 进入 frontend 目录
+cd frontend
 
-``` bash
-yarn
-```
-
-## 更新依赖（非必须）
-减少可能的安全隐患
-``` bash
-ncu -u
-yarn install
-yarn up
+# 安装依赖
+pnpm install
 ```
 
 ## 开发
 
-``` bash
-# serve with hot reload at localhost:8010
-yarn dev
-# or npm run dev
+```bash
+# 启动开发服务器 (http://localhost:3000)
+pnpm dev
 ```
 
-## 部属
-生成前端代码, 默认路径在backend/dist目录下
-``` bash
-# build for production with minification
-yarn build
-# or npm run build
+开发时会自动代理 `/syncbackend` 请求到 `http://localhost:8000`，需同时启动后端。
+
+## 构建
+
+```bash
+# 构建生产版本（输出到 ../backend/dist）
+pnpm build
+
+# 预览构建结果
+pnpm preview
+
+# 类型检查
+pnpm type-check
 ```
-~~构建docker image~~
-``` bash
-# deprecation 
-# docker build -t sync_frontend .
+
+## 更新依赖
+
+```bash
+# 交互式升级
+pnpm up -i --latest
+
+# 或直接升级所有
+pnpm update --latest
+```
+
+## 项目结构
+
+```
+src/
+├── api/              # API 服务层
+│   └── index.ts
+├── views/            # 页面组件
+│   ├── SyncView.vue
+│   ├── ExtractView.vue
+│   ├── UploadView.vue
+│   └── DownloadView.vue
+├── App.vue           # 根组件
+├── main.ts           # 应用入口
+└── vite-env.d.ts     # 类型声明
 ```
