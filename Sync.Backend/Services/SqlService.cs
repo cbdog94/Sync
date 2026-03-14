@@ -20,6 +20,7 @@ public class SqlService
             TrustServerCertificate = false,
             Authentication = SqlAuthenticationMethod.ActiveDirectoryDefault,
             ConnectTimeout = 30,
+            MinPoolSize = 1,
         }.ConnectionString;
     }
 
