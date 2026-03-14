@@ -1,0 +1,18 @@
+services:
+  azclicredsproxy:
+    image: workleap/azure-cli-credentials-proxy:latest
+    ports:
+      - "9080:8080"
+    volumes:
+      - "${HOME}/.azure:/app/.azure/"
+
+  sync-app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - azclicredsproxy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IDENTITY_ENDPOINT=http://azclicredsproxy:8080/token
+      - IMDS_ENDPOINT=dummy_required_value

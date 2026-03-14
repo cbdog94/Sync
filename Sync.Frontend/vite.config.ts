@@ -27,32 +27,24 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/syncbackend': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:5000',
         changeOrigin: true,
       },
     },
   },
   build: {
-    outDir: '../backend/dist',
+    outDir: '../Sync.Backend/wwwroot',
     emptyOutDir: true,
     sourcemap: false,
     minify: 'esbuild',
-    chunkSizeWarningLimit: 1000, // 提高到 1MB
     rollupOptions: {
       output: {
-        // 使用函数形式避免循环依赖问题
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('element-plus')) {
-              return 'element-plus'
-            }
-            if (id.includes('@vue') || id.includes('vue-router')) {
-              return 'vue-vendor'
-            }
-            if (id.includes('@vueuse')) {
-              return 'vueuse'
-            }
-            return 'vendor'
+        manualChunks(id: string) {
+          if (id.includes('element-plus') || id.includes('@element-plus/icons-vue')) {
+            return 'element-plus'
+          }
+          if (id.includes('node_modules/vue') || id.includes('vue-router') || id.includes('@vueuse')) {
+            return 'vue-vendor'
           }
         },
       },

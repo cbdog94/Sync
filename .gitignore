@@ -103,6 +103,27 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-.vscode
-
 .DS_Store
+
+# Node.js / Frontend
+node_modules/
+*.local
+
+# Frontend build output
+Sync.Backend/wwwroot/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.ncrunchproject
+*.ncrunchsolution
+*.DotSettings.user
+project.lock.json
+*.nuget.props
+*.nuget.targets
+
+# .NET Development config (contains secrets)
+appsettings.Development.json

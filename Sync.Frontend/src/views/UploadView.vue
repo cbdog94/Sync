@@ -1,11 +1,8 @@
 <script setup lang="ts">
-// import { inject } from 'vue'
 import { ElMessage } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
 import type { UploadProps, UploadProgressEvent, UploadFile, UploadRawFile } from 'element-plus'
 import type { ApiResponse, SubmitResult } from '@/api'
-
-// const api = inject<Api>('api')!
 
 // 响应式状态
 const resultCode = ref('')

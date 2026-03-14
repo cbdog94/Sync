@@ -25,8 +25,8 @@ npm install -g pnpm
 ## 开始
 
 ```bash
-# 进入 frontend 目录
-cd frontend
+# 进入前端目录
+cd Sync.Frontend
 
 # 安装依赖
 pnpm install
@@ -39,12 +39,12 @@ pnpm install
 pnpm dev
 ```
 
-开发时会自动代理 `/syncbackend` 请求到 `http://localhost:8000`，需同时启动后端。
+开发时会自动代理 `/syncbackend` 请求到 `http://localhost:5000`，需同时启动后端。
 
 ## 构建
 
 ```bash
-# 构建生产版本（输出到 ../backend/dist）
+# 构建生产版本（输出到 ../Sync.Backend/wwwroot）
 pnpm build
 
 # 预览构建结果

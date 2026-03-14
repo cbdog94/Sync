@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+
+
+ 
+    {
+      "name": "Backend: Debug",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/Sync.Backend/bin/Debug/net10.0/Sync.Backend.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Sync.Backend",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "preLaunchTask": "Build All"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack (Dev)",
+      "configurations": ["Backend: Debug"],
+      "preLaunchTask": "Frontend: Dev",
+      "stopAll": true
+    }
+  ]
+}

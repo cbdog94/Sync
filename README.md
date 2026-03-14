@@ -1,99 +1,82 @@
-# Sync - 文本同步工具
+# Sync - ASP.NET Core + Vue
 
-一个简单的 Web 端文本同步工具。解决多平台下的文本同步痛点。
+[中文](README.zh-CN.md) | English
 
-[DEMO](https://sync.cbdog94.com)
+A text and file sync tool built with ASP.NET Core backend + Vue 3 frontend.
 
-## 技术栈
-
-### 前端
-- **Vue 3** + **Composition API** + **TypeScript**
-- **Vite** - 现代构建工具
-- **Element Plus** - UI 组件库
-- **VueUse** - 组合式 API 工具库
-
-### 后端
-- **FastAPI** - 现代异步 Web 框架
-- **Pydantic** - 数据验证
-- **Uvicorn** - ASGI 服务器
-- **Azure SQL** - 数据存储
-- **Azure Blob Storage** - 文件存储
-
-## 项目结构
+## Project Structure
 
 ```
 Sync/
-├── frontend/                # 前端项目
-│   ├── src/
-│   │   ├── api/            # API 服务
-│   │   ├── views/          # 页面组件
-│   │   ├── App.vue         # 根组件
-│   │   └── main.ts         # 入口文件
-│   ├── vite.config.ts      # Vite 配置
-│   ├── tsconfig.json       # TypeScript 配置
-│   └── package.json        # 依赖配置
-│
-└── backend/                 # 后端项目
-    ├── app/
-    │   ├── routers/        # API 路由
-    │   ├── services/       # 业务服务
-    │   ├── config.py       # 配置管理
-    │   ├── schemas.py      # 数据模型
-    │   └── main.py         # FastAPI 应用
-    └── requirements.txt    # Python 依赖
+├── Sync.Backend/          # ASP.NET Core Web API (.NET 10)
+│   ├── Controllers/       # API controllers
+│   ├── Models/            # Data models and settings
+│   ├── Services/          # Azure SQL / Blob services
+│   ├── wwwroot/           # Frontend build output (generated after build)
+│   ├── Program.cs         # Application entry point
+│   └── appsettings.json   # Configuration file
+└── Sync.Frontend/         # Vue 3 + Vite + Element Plus
+    ├── src/
+    │   ├── api/           # API client
+    │   ├── views/         # Page components
+    │   ├── App.vue        # Root component
+    │   └── main.ts        # Entry file
+    ├── vite.config.ts     # Vite configuration
+    └── package.json
 ```
 
-## 快速开始
+## Development
 
-### 环境要求
-- Node.js >= 18
-- Python >= 3.11
-- pnpm >= 9.0
-
-### 前端开发
+### Backend
 
 ```bash
-cd frontend
+cd Sync.Backend
 
-# 安装依赖
+# Configure Azure connection info in appsettings.json
+# Run
+dotnet run
+```
+
+Backend listens on `http://localhost:5000` by default.
+
+### Frontend
+
+```bash
+cd Sync.Frontend
+
+# Install dependencies
 pnpm install
 
-# 开发模式
+# Development mode (auto-proxy to backend)
 pnpm dev
 
-# 构建生产版本
+# Build (output to Sync.Backend/wwwroot)
 pnpm build
 ```
 
-### 后端开发
+Frontend dev server runs at `http://localhost:3000`, API requests are automatically proxied to the backend.
+
+## Docker
+
+No .NET SDK or Node.js required — just Docker.
+
+### Docker Compose (local development with Azure CLI credentials)
+
+Uses [azure-cli-credentials-proxy](https://github.com/workleap/azure-cli-credentials-proxy) so your local `az login` session works inside containers:
 
 ```bash
-cd backend
+# Login to Azure first
+az login
 
-# 创建虚拟环境
-python -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-
-# 安装依赖
-pip install -r requirements.txt
-
-# 设置环境变量
-export AZURE_SQL_SERVER="your-server.database.windows.net"
-export AZURE_SQL_DATABASE="your-database"
-export AZURE_STORAGE_ACCOUNT_URL="https://your-account.blob.core.windows.net"
-
-# 开发模式运行
-uvicorn app.main:app --reload --port 8000
+# Start all services
+docker compose up --build
 ```
 
-## 部署
+The app will be available at `http://localhost:8080`.
 
-1. 构建前端：`cd frontend && yarn build`
-2. 将 `frontend/dist` 复制到 `backend/dist`
-3. 部署后端到 Azure App Service
+## Deployment
 
-## API 文档
+1. Build frontend: `cd Sync.Frontend && pnpm build`
+2. Publish backend: `cd Sync.Backend && dotnet publish -c Release`
 
-启动后端后访问：
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
+Frontend build output goes to `Sync.Backend/wwwroot/`, the backend serves static files automatically.

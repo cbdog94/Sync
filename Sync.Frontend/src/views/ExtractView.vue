@@ -89,7 +89,6 @@ const handleCopy = async (showMessage = true) => {
               v-model="code"
               placeholder="请输入4位提取码"
               maxlength="4"
-              @keyup.enter="handleExtract"
               class="code-input"
             />
           </el-form-item>
