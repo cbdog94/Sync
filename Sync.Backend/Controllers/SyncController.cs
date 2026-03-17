@@ -12,18 +12,18 @@ public class SyncController : ControllerBase
 {
     private const int MaxCodeRetries = 20;
 
-    private readonly SqlService _sqlService;
+    private readonly InMemoryKvService _kvService;
     private readonly BlobService _blobService;
     private readonly SyncSettings _settings;
     private readonly ILogger<SyncController> _logger;
 
     public SyncController(
-        SqlService sqlService,
+        InMemoryKvService kvService,
         BlobService blobService,
         IOptions<SyncSettings> settings,
         ILogger<SyncController> logger)
     {
-        _sqlService = sqlService;
+        _kvService = kvService;
         _blobService = blobService;
         _settings = settings.Value;
         _logger = logger;
@@ -36,7 +36,7 @@ public class SyncController : ControllerBase
         for (int i = 0; i < MaxCodeRetries; i++)
         {
             var code = GenerateCode();
-            if (await _sqlService.GetAsync($"{code}_{suffix}") is null)
+            if (await _kvService.GetAsync($"{code}_{suffix}") is null)
                 return code;
         }
         return null;
@@ -65,7 +65,7 @@ public class SyncController : ControllerBase
             if (code is null)
                 return new ApiResponse<SubmitResult> { Code = 1, Message = "Unable to generate unique code, please retry.", Result = new() };
 
-            await _sqlService.SetManyAsync(new Dictionary<string, string>
+            await _kvService.SetManyAsync(new Dictionary<string, string>
             {
                 [$"{code}_text"] = request.Text,
                 [$"{code}_once"] = request.Once ? "1" : "0"
@@ -88,7 +88,7 @@ public class SyncController : ControllerBase
 
         try
         {
-            var results = await _sqlService.GetManyAsync([$"{request.Code}_text", $"{request.Code}_once"]);
+            var results = await _kvService.GetManyAsync([$"{request.Code}_text", $"{request.Code}_once"]);
 
             if (!results.ContainsKey($"{request.Code}_text"))
                 return new ApiResponse<ExtractResult> { Code = 2, Message = "Code does not exist.", Result = new() };
@@ -97,7 +97,7 @@ public class SyncController : ControllerBase
             results.TryGetValue($"{request.Code}_once", out var once);
 
             if (once == "1")
-                await _sqlService.DeleteManyAsync([$"{request.Code}_text", $"{request.Code}_once"]);
+                await _kvService.DeleteManyAsync([$"{request.Code}_text", $"{request.Code}_once"]);
 
             return new ApiResponse<ExtractResult> { Code = 0, Result = new ExtractResult { Text = text } };
         }
@@ -123,7 +123,7 @@ public class SyncController : ControllerBase
             if (code is null)
                 return new ApiResponse<SubmitResult> { Code = 1, Message = "Unable to generate unique code, please retry.", Result = new() };
 
-            await _sqlService.SetAsync($"{code}_file", fileName);
+            await _kvService.SetAsync($"{code}_file", fileName);
 
             using var stream = file.OpenReadStream();
             await _blobService.UploadAsync($"file-{code}", stream);
@@ -145,7 +145,7 @@ public class SyncController : ControllerBase
             if (string.IsNullOrEmpty(code))
                 return new ApiResponse<CheckFileResult> { Code = 1, Message = "Code is missed.", Result = new() };
 
-            var fileName = await _sqlService.GetAsync($"{code}_file");
+            var fileName = await _kvService.GetAsync($"{code}_file");
             if (fileName is null)
                 return new ApiResponse<CheckFileResult> { Code = 2, Message = "Code does not exist.", Result = new() };
 
@@ -164,7 +164,7 @@ public class SyncController : ControllerBase
         if (string.IsNullOrEmpty(code))
             return BadRequest("Code is missed.");
 
-        var fileName = await _sqlService.GetAsync($"{code}_file");
+        var fileName = await _kvService.GetAsync($"{code}_file");
         if (fileName is null)
             return NotFound("Code does not exist.");
 

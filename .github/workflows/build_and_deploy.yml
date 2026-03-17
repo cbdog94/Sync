@@ -40,6 +40,10 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Run unit tests
+        working-directory: ./Sync.Backend.Tests
+        run: dotnet test -c Release
+
       - name: Publish .NET backend
         working-directory: ./Sync.Backend
         run: dotnet publish -c Release -o ./publish

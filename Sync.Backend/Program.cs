@@ -7,8 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<SyncSettings>(builder.Configuration.GetSection("Sync"));
 
 // Service registration
-builder.Services.AddSingleton<SqlService>();
+builder.Services.AddSingleton<InMemoryKvService>();
 builder.Services.AddSingleton<BlobService>();
+builder.Services.AddHostedService<KvCleanupService>();
 
 // Controllers
 builder.Services.AddControllers()
@@ -54,8 +55,5 @@ if (Directory.Exists(distPath))
 {
     app.MapFallbackToFile("index.html");
 }
-
-// Warm up SQL connection pool
-await app.Services.GetRequiredService<SqlService>().WarmupAsync();
 
 app.Run();
