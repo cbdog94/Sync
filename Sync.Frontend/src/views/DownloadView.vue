@@ -75,7 +75,6 @@ const handleReset = () => {
               v-model="code"
               placeholder="请输入4位提取码"
               maxlength="4"
-              @keyup.enter="handleDownload"
               class="code-input"
             />
           </el-form-item>
