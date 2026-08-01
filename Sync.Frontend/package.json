@@ -23,7 +23,7 @@
     "@vitejs/plugin-vue": "^6.0.6",
     "autoprefixer": "^10.5.0",
     "esbuild": "^0.28.1",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.18",
     "typescript": "^6.0.3",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.0.0",
