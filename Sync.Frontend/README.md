@@ -13,8 +13,8 @@
 
 ## 环境要求
 
-- Node.js >= 18
-- pnpm >= 9.0
+- Node.js ^20.19.0 或 >=22.12.0
+- pnpm 10.27.0（与 package.json 中的 packageManager 保持一致）
 
 ## 安装 pnpm
 
@@ -56,12 +56,15 @@ pnpm type-check
 
 ## 更新依赖
 
+当前 `vue-tsc` 尚不兼容 TypeScript 7，请保留 TypeScript 6。
+
 ```bash
 # 交互式升级
 pnpm up -i --latest
 
 # 或直接升级所有
 pnpm update --latest
+pnpm update typescript@^6.0.3
 ```
 
 ## 项目结构
